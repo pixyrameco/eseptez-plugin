@@ -17,7 +17,7 @@ Writes are drafts only: stock and debts change after a person posts the draft in
 **Claude Code**
 
 ```
-/plugin marketplace add <github-owner>/eseptez-plugin
+/plugin marketplace add pixyrameco/eseptez-plugin
 /plugin install eseptez@eseptez
 ```
 

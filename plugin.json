@@ -5,6 +5,7 @@
   "description": "EsepTez — POS and inventory for shops in Kazakhstan: sales, stock, debts, cashier control and goods receipts from a photo of a supplier invoice.",
   "author": { "name": "EsepTez", "url": "https://www.eseptez.kz" },
   "homepage": "https://www.eseptez.kz/ai",
+  "repository": "https://github.com/pixyrameco/eseptez-plugin",
   "license": "MIT",
   "keywords": ["pos", "inventory", "retail", "kazakhstan", "invoices", "accounting"],
   "extensions": {
