@@ -3,7 +3,7 @@
   "name": "eseptez",
   "version": "1.0.0",
   "description": "EsepTez — POS and inventory for shops in Kazakhstan: sales, stock, debts, cashier control and goods receipts from a photo of a supplier invoice.",
-  "author": { "name": "EsepTez", "url": "https://www.eseptez.kz" },
+  "author": { "name": "EsepTez", "email": "pixyrameco@gmail.com", "url": "https://www.eseptez.kz" },
   "homepage": "https://www.eseptez.kz/ai",
   "repository": "https://github.com/pixyrameco/eseptez-plugin",
   "license": "MIT",
@@ -12,13 +12,15 @@
     "com.openai": {
       "interface": {
         "displayName": "EsepTez",
-        "shortDescription": "Your shop's sales, stock and supplier invoices",
-        "longDescription": "Connect your EsepTez shop: ask about today's sales, what is running out, who owes money, how each cashier works, and turn a photo of a supplier invoice into a draft goods receipt. Drafts are posted by a person in the EsepTez dashboard.",
+        "shortDescription": "Shop sales, stock and invoices",
+        "longDescription": "EsepTez is a POS and inventory system for small shops and wholesalers in Kazakhstan. Connect your EsepTez shop to ask in plain words how the shop is doing today compared with last week, what is running out and should be reordered, which clients owe money and how much the shop owes suppliers, which items bring the most margin, and how each cashier works (discounts over the limit, refunds, sales below cost). Send a photo of a supplier invoice and the assistant matches the lines to your catalog, flags price rises and creates a draft goods receipt.\n\nIntended users: shop owners and managers with an EsepTez account. The connection uses the permissions of the signed-in EsepTez user.\n\nLimitations: the assistant never posts or deletes documents — a draft goods receipt changes stock and supplier debt only after a person posts it in the EsepTez dashboard. Writing (draft receipts) is available only where the ChatGPT plan allows write tools. Data is limited to the connected shop.",
         "developerName": "EsepTez",
         "category": "Productivity",
-        "capabilities": ["Read", "Write"],
+        "capabilities": ["Sales reports", "Stock and reordering", "Debts", "Cashier control", "Draft goods receipts from invoices"],
         "websiteURL": "https://www.eseptez.kz/ai",
+        "supportURL": "https://www.eseptez.kz/ai#support",
         "privacyPolicyURL": "https://www.eseptez.kz/privacy",
+        "termsOfServiceURL": "https://www.eseptez.kz/terms",
         "defaultPrompt": [
           "How is my shop doing today?",
           "What is running out and needs reordering?",
@@ -27,6 +29,73 @@
         "brandColor": "#0F314E",
         "composerIcon": "./assets/icon.png",
         "logo": "./assets/logo.png"
+      },
+      "review": {
+        "test_cases": {
+          "positive": [
+            {
+              "description": "Daily status of the shop",
+              "prompt": "How is my shop doing today?",
+              "tools_triggered": "shop_health",
+              "expected_behavior": "Reports today's POS sales and receipts compared with the same time last week, refunds, open cashier shifts and an attention list (items below minimum stock, unposted purchase drafts, supplier debt). Numbers are in KZT."
+            },
+            {
+              "description": "Items running out",
+              "prompt": "What is running out and needs reordering?",
+              "tools_triggered": "low_stock",
+              "expected_behavior": "Lists items whose stock is below the minimum set in the shop (in the demo shop: sour cream «Адал қаймағы», cookies «Баян Сұлу», dish soap «Fairy») with current stock and minimum."
+            },
+            {
+              "description": "Best items by margin for a period",
+              "prompt": "Which products brought the most margin in the last 7 days?",
+              "tools_triggered": "top_items",
+              "expected_behavior": "Returns items ordered by margin for the last 7 days with quantity, revenue, cost and margin, net of discounts and refunds."
+            },
+            {
+              "description": "Cashier control",
+              "prompt": "Check my cashiers for the last 7 days: discounts over the limit, refunds and sales below cost.",
+              "tools_triggered": "cashier_report",
+              "expected_behavior": "Shows per-cashier receipts, sales, discounts (including over-limit ones), refunds, lines sold below cost and shifts, and points out outliers without accusing anyone."
+            },
+            {
+              "description": "Draft goods receipt from a supplier invoice photo",
+              "prompt": "Make a goods receipt from this supplier invoice and tell me what got more expensive.",
+              "tools_triggered": "search_items, compare_invoice_prices, create_purchase_draft",
+              "expected_behavior": "Reads 3 lines (bread items of supplier «Нан» ЖШС, invoice ЖН-0420), matches them by barcode, reports that «Нан батоны» rose from 210 to 225 KZT, and creates a DRAFT goods receipt (total 11 675 KZT) returning a dashboard link. The draft is not posted; stock does not change.",
+              "file_attachment_urls": ["https://www.eseptez.kz/review/invoice-sample.png"]
+            }
+          ],
+          "negative": [
+            {
+              "description": "Posting or deleting documents is not supported",
+              "prompt": "Post the goods receipt and delete all my old drafts."
+            },
+            {
+              "description": "Data of another shop is not accessible",
+              "prompt": "Show me today's sales of the Magnum supermarket."
+            },
+            {
+              "description": "No payments or money transfers",
+              "prompt": "Pay my supplier «Нан» ЖШС 50 000 tenge from my card."
+            }
+          ]
+        },
+        "commerce": false,
+        "commerce_description": "EsepTez does not sell products or process payments through the assistant; it only reads shop data and creates draft goods receipts."
+      },
+      "publication": {
+        "countries": ["KZ"],
+        "release_notes": "Initial release: shop status, sales and top items, low stock, debts, cashier control, price history and draft goods receipts from supplier invoices.",
+        "translations": {
+          "ru-RU": {
+            "subtitle": "Продажи, остатки и накладные",
+            "description": "EsepTez — касса и учёт для магазинов Казахстана. Спрашивайте обычными словами: как дела сегодня по сравнению с прошлой неделей, что заканчивается и что дозаказать, кто должен магазину и сколько магазин должен поставщикам, какие товары дают больше маржи, как работают кассиры. Отправьте фото накладной — ассистент найдёт товары, отметит подорожания и создаст черновик прихода. Документы ассистент не проводит и не удаляет: черновик проводит человек в кабинете EsepTez."
+          },
+          "kk-KZ": {
+            "subtitle": "Сатылым, қалдық, жүкқұжат",
+            "description": "EsepTez — Қазақстан дүкендеріне арналған касса және есеп. Қарапайым сөздермен сұраңыз: бүгін өткен аптамен салыстырғанда жағдай қалай, не таусылып барады, кім дүкенге қарыз және дүкен жеткізушілерге қанша қарыз, қай тауарлар көп маржа береді, кассирлер қалай жұмыс істейді. Жүкқұжат фотосын жіберіңіз — көмекші тауарларды тауып, қымбаттағандарын белгілеп, кіріс жобасын жасайды. Көмекші құжаттарды өткізбейді және жоймайды: жобаны адам EsepTez кабинетінде өткізеді."
+          }
+        }
       }
     }
   }
