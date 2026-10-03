@@ -1,0 +1,11 @@
+{
+  "name": "eseptez",
+  "owner": { "name": "EsepTez", "url": "https://www.eseptez.kz" },
+  "plugins": [
+    {
+      "name": "eseptez",
+      "source": "./",
+      "description": "Your EsepTez shop in Claude: sales, stock, debts, cashier control, goods receipts from invoice photos."
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "eseptez": {
+      "type": "http",
+      "url": "https://www.eseptez.kz/api/mcp"
+    }
+  }
+}

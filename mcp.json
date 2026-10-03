@@ -1,0 +1,9 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/mcp.schema.json",
+  "mcpServers": {
+    "eseptez": {
+      "type": "streamable-http",
+      "url": "https://www.eseptez.kz/api/mcp"
+    }
+  }
+}
